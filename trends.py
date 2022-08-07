@@ -10,7 +10,7 @@ titles = []
 reddit = praw.Reddit(client_id=id, client_secret=secret, user_agent='trends')
 
 def alerts(message):
-    url = "https://hooks.slack.com/services/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"
+    #url = "https://hooks.slack.com/services/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"
     title = ("News")
     slack_data = {"username": "Test", "attachments": [{
         "color": "#B337ED",
