@@ -6,12 +6,13 @@ import requests
 id = '_PoNf05jx82wXSw2wUZgHw'
 secret = 'TQYRzyve4PcJWBiNo2Oauuwqeec1JA'
 titles = []
+urls = []
 
 reddit = praw.Reddit(client_id=id, client_secret=secret, user_agent='trends')
 
 def alerts(message):
     url = ""
-    title = ("News")
+    title = ("Updates")
     slack_data = {"username": "Test", "attachments": [{
         "color": "#B337ED",
         "fields": [{
@@ -24,10 +25,14 @@ def alerts(message):
     byte_length = str(sys.getsizeof(slack_data))
     headers = {'Content-Type': "application/json",
     'Content-Length': byte_length}
-    response = requests.post(url, data = json.dumps(slack_data), headers = headers)
+    response = requests.post(url, data = json.dumps(slack_data), headers=headers)
 
     if response.status_code != 200:
         raise Exception(response.status_code, response.text)
+
+def subreddit(sub):
+    message = reddit.subreddit(sub).hot(limit=1)
+    return message
 
 # hot_posts = reddit.subreddit('politics').hot(limit=5)
 # for post in hot_posts:
@@ -38,7 +43,13 @@ def alerts(message):
 # print(titles)
 
 if __name__ == '__main__':
-    message = reddit.subreddit('politics').hot(limit=5)
+    message = subreddit('politics')
+    s = ""
+    print(type(s))
     for msg in message:
-        titles = (msg.url)
+        s = msg.title
+        print(type(msg.title))
+        titles = (msg.title)
+        urls = (msg.url)
         alerts(titles)
+        alerts(urls)
